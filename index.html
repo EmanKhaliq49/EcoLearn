@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoLearn AI - Sustainable Learning Platform</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#34a853">
+    <link rel="icon" href="/icons/icon-192.png">
+    <!-- Internal styles for Home page -->
+    <style>
+        :root {
+            --eco-green: #2E7D32;
+            --eco-green-600: #1b5e20;
+            --earth-bg: #F1F8E9;
+            --shadow: 0 10px 24px rgba(0,0,0,0.10);
+            --radius: 16px;
+            --transition: 200ms ease;
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            font-family: Poppins, Arial, sans-serif;
+            color: #1f2a24;
+            background: linear-gradient(135deg, rgba(46,125,50,0.08), rgba(165,214,167,0.12)) , var(--earth-bg);
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Subtle leaf background pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2390c290' stroke-opacity='0.25' stroke-width='1.2'%3E%3Cpath d='M20 70c18-8 22-28 6-46 22 2 40 18 40 40 0 18-12 32-30 36 10-10 10-20-16-30z'/%3E%3Cpath d='M84 24c10 12 10 24-8 36 14-4 24 0 30 12-6 6-16 10-26 8 8-14 0-30-20-38 10-6 18-12 24-18z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 280px 280px;
+            opacity: 0.7;
+        }
+
+        .header {
+            background: #ffffffcc;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid #e6f0ea;
+            position: sticky; top: 0; z-index: 10;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 32px; height: 32px; object-fit: contain; }
+        .logo-text { font-weight: 800; color: var(--eco-green); letter-spacing: .2px; }
+        .share-btn {
+            border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; color: #fff; cursor: pointer;
+            background: linear-gradient(180deg, var(--eco-green), var(--eco-green-600));
+            box-shadow: var(--shadow);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+        .share-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(46,125,50,0.18); }
+
+        .main { padding: 24px; display: flex; justify-content: center; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 26px;
+            width: 100%;
+            max-width: 980px; /* wider so cards are bigger while centered */
+            margin: 0 auto;
+        }
+
+        .feature-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none; color: #184a1d; background: #ffffffb8;
+            border: 1px solid rgba(46,125,50,0.15);
+            border-radius: var(--radius);
+            padding: 28px 22px; min-height: 200px; /* larger buttons */
+            box-shadow: var(--shadow);
+            transform: translateZ(0) scale(1);
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+        }
+        .feature-btn .feature-icon { font-size: 36px; }
+        .feature-btn .feature-text { font-weight: 800; color: var(--eco-green); font-size: 18px; }
+        .feature-btn:hover { transform: scale(1.04); box-shadow: 0 20px 34px rgba(0,0,0,0.16); border-color: rgba(46,125,50,0.35); background: #fff; }
+        .feature-btn:active { transform: scale(0.99); }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .main { padding: 16px; }
+            .feature-btn { min-height: 104px; padding: 18px 14px; }
+        }
+        @media (max-width: 600px) {
+            .feature-grid { grid-template-columns: 1fr; max-width: 420px; }
+        }
+        @media (max-width: 480px) {
+            .logo-text { font-size: 1.1rem; }
+            .share-btn { padding: 8px 12px; font-size: 0.9rem; }
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2ecc71">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <span class="logo-text">EcoLearn AI</span>
+        </div>
+        <button class="share-btn" onclick="location.href='share.html?auto=1'">Share Impact</button>
+    </header>
+
+    <main class="main">
+        <div class="feature-grid">
+            <a href="chat.html" class="feature-btn" id="chatbot">
+                <span class="feature-icon">🤖</span>
+                <span class="feature-text">Chatbot</span>
+            </a>
+            <a href="carbon.html" class="feature-btn" id="carbon-footprint">
+                <span class="feature-icon">🌱</span>
+                <span class="feature-text">Carbon Footprint</span>
+            </a>
+            <a href="recycle.html" class="feature-btn" id="recycle">
+                <span class="feature-icon">♻️</span>
+                <span class="feature-text">Recycle</span>
+            </a>
+            <a href="quiz.html" class="feature-btn" id="quiz">
+                <span class="feature-icon">❓</span>
+                <span class="feature-text">Quiz</span>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/sw.js")
+            .then(() => console.log("✅ Service Worker registered"))
+            .catch(err => console.log("⚠️ SW error:", err));
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

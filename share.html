@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoLearn AI — Share Impact</title>
+  <style>
+    :root{
+      --eco: #2E7D32;
+      --eco-600: #1b5e20;
+      --bg: #F1F8E9;
+      --text: #1f2a24;
+      --muted: #5f6f65;
+      --radius: 16px;
+      --shadow: 0 12px 28px rgba(0,0,0,.12);
+      --transition: 200ms ease;
+    }
+
+    /* Page */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Poppins, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(46,125,50,.08), transparent 40%) no-repeat,
+        var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    /* Card */
+    .card{
+      width:min(92vw, 420px);
+      background:#fff;
+      border:1px solid #e8efe6;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px 20px;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .48s var(--transition) forwards;
+    }
+    /* Disable transforms/animations during capture to avoid blank renders */
+    .card.capture-mode{ animation:none !important; transform:none !important; opacity:1 !important; }
+    @keyframes fadeIn{
+      to{opacity:1; transform: translateY(0);}
+    }
+
+    .title{
+      display:flex; align-items:center; gap:10px;
+      margin:4px 0 14px;
+      font-weight:800; color:var(--eco);
+    }
+    .metrics{
+      display:grid; gap:12px;
+      grid-template-columns: 1fr;
+    }
+    .metric{
+      border:1px solid #edf3ed;
+      border-radius:12px;
+      padding:14px;
+      background:#fafdfb;
+    }
+    .label{ font-size:.9rem; color:var(--muted); margin-bottom:6px; }
+    .value{ font-size:1.25rem; font-weight:800; color:var(--eco-600); }
+
+    /* Actions */
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+      margin-top:14px;
+    }
+    .btn{
+      border:0; border-radius:12px; padding:10px 16px; color:#fff;
+      font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(0,0,0,.14);
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      background: linear-gradient(180deg, var(--eco), var(--eco-600));
+    }
+    .btn:hover{ transform:translateY(-2px); box-shadow:0 14px 28px rgba(0,0,0,.18); }
+
+
+    /* Responsive */
+    @media (max-width:520px){
+      .card{ width:96vw; padding:18px; border-radius:14px; }
+      .value{ font-size:1.15rem; }
+      .actions{ flex-direction:column; }
+      .btn{ width:100%; }
+    }
+    /* Home button */
+    #homeBtn { position: fixed; top: 18px; left: 18px; background: #29b6f6; color: #fff; border: 0; padding: 8px 12px; border-radius: 6px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+    #homeBtn:hover { background: #0288d1; }
+  </style>
+</head>
+<body>
+  <a href="index.html" id="homeBtn">🏠 Home</a>
+  <main class="card" aria-label="Share Impact Card">
+    <h2 class="title">My Eco Impact 🌍</h2>
+
+    <section class="metrics" aria-live="polite">
+      <div class="metric">
+        <div class="label">CO2 Emitted</div>
+        <div class="value" id="co2-saved">— kg</div>
+      </div>
+      <div class="metric">
+        <div class="label">Quiz Score</div>
+        <div class="value" id="quiz-score">—</div>
+      </div>
+      <div class="metric">
+        <div class="label">Badge</div>
+        <div class="value" id="badge">—</div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="btn" id="downloadBtn">Download Image</button>
+    </div>
+  </main>
+
+  <script>
+    function ensureHtml2Canvas(cb){
+      if (window.html2canvas) { cb(); return; }
+      const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'; s.onload=cb; document.body.appendChild(s);
+    }
+    // Hydrate values (optional: uses localStorage if present)
+    (function () {
+      try {
+        // Primary consolidated object
+        const saved = JSON.parse(localStorage.getItem('ecolearn-impact') || '{}');
+        // Legacy keys (fallbacks)
+        const legacyCO2 = localStorage.getItem('eco_co2_saved');
+        const legacyScore = localStorage.getItem('eco_quiz_score');
+        const legacyBadge = localStorage.getItem('eco_quiz_badge');
+
+        const co2 = saved.co2 || (legacyCO2 ? `${legacyCO2} kg` : null);
+        const score = saved.score || legacyScore;
+        const badge = saved.badge || legacyBadge;
+
+        if (co2)  document.getElementById('co2-saved').textContent = co2;
+        if (score) document.getElementById('quiz-score').textContent = score;
+        if (badge) document.getElementById('badge').textContent = cleanBadge(badge);
+      } catch {}
+      // Auto-open share on direct navigation with ?auto=1
+      const params = new URLSearchParams(location.search);
+      if (params.get('auto') === '1') {
+        setTimeout(() => {
+          const shareBtn = document.getElementById('downloadBtn');
+          if (shareBtn) shareBtn.focus();
+        }, 50);
+      }
+    })();
+
+    function cleanBadge(raw){
+      if (!raw) return '—';
+      const txt = String(raw).replace(/[\u{1F300}-\u{1FAFF}]/gu,'').trim();
+      if (/gold/i.test(txt)) return 'Gold';
+      if (/silver/i.test(txt)) return 'Silver';
+      if (/bronze/i.test(txt)) return 'Bronze';
+      return txt.split(/\s|-/)[0] || '—';
+    }
+
+    // Build share text once
+    function shareText(){
+      const co2 = document.getElementById('co2-saved').textContent || 'my CO₂ savings';
+      const score = document.getElementById('quiz-score').textContent || 'my quiz score';
+      const badge = document.getElementById('badge').textContent || '';
+      return `🌍 I saved ${co2} CO₂ and scored ${score} in EcoLearn AI! ${badge}`.trim();
+    }
+
+    // Download card as image (adds to gallery on mobile)
+    (function setupDownload(){
+      const btn = document.getElementById('downloadBtn');
+      ensureHtml2Canvas(() => {
+        btn.addEventListener('click', async () => {
+          const card = document.querySelector('.card');
+          // Ensure fonts are loaded and element is stable
+          await (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve());
+          card.classList.add('capture-mode');
+          card.style.opacity = '1';
+          card.scrollIntoView({behavior:'auto', block:'center', inline:'center'});
+          const canvas = await html2canvas(card, {
+            backgroundColor: '#ffffff',
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            windowWidth: Math.max(card.scrollWidth, card.clientWidth),
+            windowHeight: Math.max(card.scrollHeight, card.clientHeight),
+            onclone: (doc)=>{
+              const c = doc.querySelector('.card');
+              if (c) c.classList.add('capture-mode');
+            }
+          });
+          card.classList.remove('capture-mode');
+          canvas.toBlob((blob)=>{
+            if(!blob) return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href=url; a.download='eco-impact.png';
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(()=>URL.revokeObjectURL(url),2000);
+          }, 'image/png');
+        });
+      });
+    })();
+
+
+  </script>
+</body>
+</html>

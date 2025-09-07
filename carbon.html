@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EcoLearn - Carbon Footprint Calculator 🌱</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Comic Sans MS', 'Trebuchet MS', Arial, sans-serif;
+    background: linear-gradient(135deg, #F1F8E9 0%, #A5D6A7 50%, #C8E6C9 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: backgroundShift 15s ease-in-out infinite;
+  }
+
+  @keyframes backgroundShift {
+    0%, 100% { background: linear-gradient(135deg, #F1F8E9 0%, #A5D6A7 50%, #C8E6C9 100%); }
+    50% { background: linear-gradient(135deg, #A5D6A7 0%, #C8E6C9 50%, #F1F8E9 100%); }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-out;
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    color: #2e7d32;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-8px); }
+    60% { transform: translateY(-4px); }
+  }
+
+  .subtitle {
+    color: #4caf50;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    backdrop-filter: blur(10px);
+    border: 3px solid #fff;
+    animation: slideInUp 0.8s ease-out;
+  }
+
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2e7d32;
+    font-size: 1.1rem;
+  }
+
+  .input-container {
+    position: relative;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 15px 20px;
+    border: 3px solid #A5D6A7;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .submit-btn {
+    background: linear-gradient(45deg, #4caf50, #2e7d32);
+    color: #fff;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .submit-btn:hover::before {
+    left: 100%;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(76, 175, 80, 0.4);
+  }
+
+  .submit-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .results-panel {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(145deg, #e8f5e9, #f1f8e9);
+    border-radius: 20px;
+    border: 2px solid #c8e6c9;
+    display: none;
+    animation: slideInUp 0.6s ease-out;
+  }
+
+  .results-panel.show {
+    display: block;
+  }
+
+  #totalCO2 {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #2e7d32;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(45deg, #4caf50, #2e7d32);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .tips {
+    background: linear-gradient(145deg, #fff3e0, #ffe0b2);
+    padding: 20px;
+    border-radius: 15px;
+    color: #e65100;
+    border: 2px solid #ffcc02;
+    margin-top: 20px;
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .tips h3 {
+    color: #f57c00;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+  }
+
+  .tips ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tips li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    font-size: 1.1rem;
+  }
+
+  .tips li::before {
+    content: '🌱';
+    position: absolute;
+    left: 0;
+    top: 8px;
+  }
+
+  .chart-container {
+    margin-top: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-out;
+  }
+
+  .chart-placeholder {
+    height: 200px;
+    background: linear-gradient(45deg, #4caf50, #8bc34a);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Home button */
+  #homeBtn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  #homeBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    body { padding: 15px; }
+    .card { padding: 20px; }
+    h1 { font-size: 2rem; }
+    .subtitle { font-size: 1rem; }
+    input, select { padding: 12px 15px; font-size: 0.95rem; }
+    .submit-btn { padding: 15px 30px; font-size: 1.1rem; }
+    #totalCO2 { font-size: 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 15px; }
+    h1 { font-size: 1.8rem; }
+    input, select { padding: 10px 12px; font-size: 0.9rem; }
+    .submit-btn { padding: 12px 20px; font-size: 1rem; }
+    #totalCO2 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" id="homeBtn">🏠 Home</a>
+
+<div class="header">
+  <h1>🌍 Carbon Footprint Calculator 🌱</h1>
+  <p class="subtitle">Discover your environmental impact and get eco-friendly tips!</p>
+</div>
+
+<div class="card">
+  <form id="carbonForm">
+    <div class="form-group">
+      <label for="electricity">⚡ Electricity Usage (kWh/month)</label>
+      <div class="input-container">
+        <input type="number" id="electricity" required min="0" placeholder="Enter your monthly electricity usage">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="transport">🚗 Transport Distance (km/week)</label>
+      <div class="input-container">
+        <input type="number" id="transport" required min="0" placeholder="Enter your weekly travel distance">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="diet">🥗 Diet Type</label>
+      <div class="input-container">
+        <select id="diet" required>
+          <option value="">Choose your diet type...</option>
+          <option value="veg">🌱 Vegetarian</option>
+          <option value="mixed">🥗 Mixed Diet</option>
+          <option value="meat">🍖 Meat-heavy</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">🚀 Calculate My Carbon Score!</button>
+  </form>
+
+  <div class="results-panel" id="resultsPanel">
+    <div id="totalCO2"></div>
+    <div class="tips" id="tips"></div>
+    <div class="chart-container">
+      <canvas id="carbonChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="carbon.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    document.body.classList.add('page-enter');
+  });
+</script>
+</body>
+</html>
