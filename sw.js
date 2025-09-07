@@ -2,7 +2,7 @@ const CACHE_NAME = "ecolearn-cache-v1";
 const urlsToCache = [
   "/",
   "/index.html",
-  "/styles.css",
+  "/style.css",
   "/app.js",
   "/carbon.html",
   "/carbon.js",
