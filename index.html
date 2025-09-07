@@ -12,6 +12,7 @@
         :root {
             --eco-green: #2E7D32;
             --eco-green-600: #1b5e20;
+            --eco-light: #A5D6A7;
             --earth-bg: #F1F8E9;
             --shadow: 0 10px 24px rgba(0,0,0,0.10);
             --radius: 16px;
@@ -22,12 +23,14 @@
         html, body { height: 100%; }
         body {
             margin: 0;
-            font-family: Poppins, Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             color: #1f2a24;
-            background: linear-gradient(135deg, rgba(46,125,50,0.08), rgba(165,214,167,0.12)) , var(--earth-bg);
+            background: linear-gradient(135deg, rgba(46,125,50,0.08), rgba(165,214,167,0.12)), var(--earth-bg);
             position: relative;
             overflow-x: hidden;
+            line-height: 1.6;
         }
+
         /* Subtle leaf background pattern */
         body::before {
             content: "";
@@ -39,6 +42,7 @@
             opacity: 0.7;
         }
 
+        /* Header */
         .header {
             background: #ffffffcc;
             backdrop-filter: blur(8px);
@@ -47,11 +51,12 @@
             justify-content: space-between;
             padding: 14px 18px;
             border-bottom: 1px solid #e6f0ea;
-            position: sticky; top: 0; z-index: 10;
+            position: sticky; 
+            top: 0; 
+            z-index: 10;
         }
         .logo { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 32px; height: 32px; object-fit: contain; }
-        .logo-text { font-weight: 800; color: var(--eco-green); letter-spacing: .2px; }
+        .logo-text { font-weight: 800; color: var(--eco-green); letter-spacing: .2px; font-size: 1.2rem; }
         .share-btn {
             border: 0; border-radius: 999px; padding: 10px 16px; font-weight: 700; color: #fff; cursor: pointer;
             background: linear-gradient(180deg, var(--eco-green), var(--eco-green-600));
@@ -60,40 +65,209 @@
         }
         .share-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(46,125,50,0.18); }
 
-        .main { padding: 24px; display: flex; justify-content: center; }
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(46,125,50,0.05), rgba(165,214,167,0.08));
+            border-bottom: 1px solid rgba(46,125,50,0.1);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--eco-green);
+            margin: 0 0 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--eco-green-600);
+            margin: 0 0 30px;
+            font-weight: 600;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: #5f6f65;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about {
+            padding: 50px 20px;
+            background: #ffffffaa;
+            backdrop-filter: blur(4px);
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            color: var(--eco-green);
+            text-align: center;
+            margin: 0 0 30px;
+            font-weight: 700;
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            color: #1f2a24;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 20px;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            color: var(--eco-green);
+            text-align: center;
+            margin: 0 0 50px;
+            font-weight: 700;
+        }
+
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 26px;
-            width: 100%;
-            max-width: 980px; /* wider so cards are bigger while centered */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .feature-btn {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-            text-decoration: none; color: #184a1d; background: #ffffffb8;
+        .feature-card {
+            background: #ffffffcc;
             border: 1px solid rgba(46,125,50,0.15);
             border-radius: var(--radius);
-            padding: 28px 22px; min-height: 200px; /* larger buttons */
+            padding: 30px 25px;
+            text-align: center;
             box-shadow: var(--shadow);
-            transform: translateZ(0) scale(1);
-            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
-        .feature-btn .feature-icon { font-size: 36px; }
-        .feature-btn .feature-text { font-weight: 800; color: var(--eco-green); font-size: 18px; }
-        .feature-btn:hover { transform: scale(1.04); box-shadow: 0 20px 34px rgba(0,0,0,0.16); border-color: rgba(46,125,50,0.35); background: #fff; }
-        .feature-btn:active { transform: scale(0.99); }
 
-        /* Responsive tweaks */
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: rgba(46,125,50,0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--eco-green);
+            margin: 0 0 15px;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: #5f6f65;
+            line-height: 1.6;
+            margin: 0 0 20px;
+        }
+
+        .feature-btn {
+            background: linear-gradient(135deg, var(--eco-green), var(--eco-green-600));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .feature-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--eco-green);
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin: 0 0 15px;
+            font-weight: 700;
+        }
+
+        .footer-section p, .footer-section li {
+            margin: 0 0 10px;
+            opacity: 0.9;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section a {
+            color: var(--eco-light);
+            text-decoration: none;
+            transition: opacity var(--transition);
+        }
+
+        .footer-section a:hover {
+            opacity: 0.8;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .main { padding: 16px; }
-            .feature-btn { min-height: 104px; padding: 18px 14px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero .subtitle { font-size: 1.2rem; }
+            .hero .description { font-size: 1rem; }
+            .about h2, .features h2 { font-size: 2rem; }
+            .feature-grid { grid-template-columns: 1fr; max-width: 400px; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
         }
-        @media (max-width: 600px) {
-            .feature-grid { grid-template-columns: 1fr; max-width: 420px; }
-        }
+
         @media (max-width: 480px) {
+            .hero { padding: 40px 15px 30px; }
+            .about, .features { padding: 40px 15px; }
             .logo-text { font-size: 1.1rem; }
             .share-btn { padding: 8px 12px; font-size: 0.9rem; }
         }
@@ -104,31 +278,120 @@
 <body>
     <header class="header">
         <div class="logo">
-            <span class="logo-text">EcoLearn AI</span>
+            <span class="logo-text">🌱 EcoLearn AI</span>
         </div>
         <button class="share-btn" onclick="location.href='share.html?auto=1'">Share Impact</button>
     </header>
 
-    <main class="main">
-        <div class="feature-grid">
-            <a href="chat.html" class="feature-btn" id="chatbot">
-                <span class="feature-icon">🤖</span>
-                <span class="feature-text">Chatbot</span>
-            </a>
-            <a href="carbon.html" class="feature-btn" id="carbon-footprint">
-                <span class="feature-icon">🌱</span>
-                <span class="feature-text">Carbon Footprint</span>
-            </a>
-            <a href="recycle.html" class="feature-btn" id="recycle">
-                <span class="feature-icon">♻️</span>
-                <span class="feature-text">Recycle</span>
-            </a>
-            <a href="quiz.html" class="feature-btn" id="quiz">
-                <span class="feature-icon">❓</span>
-                <span class="feature-text">Quiz</span>
-            </a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>EcoLearn AI</h1>
+            <p class="subtitle">Sustainable Learning Platform</p>
+            <p class="description">
+                Discover the future of environmental education with our AI-powered platform designed to make learning about sustainability engaging, interactive, and impactful. Join thousands of learners in building a greener tomorrow.
+            </p>
         </div>
-    </main>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <h2>About EcoLearn AI</h2>
+            <p>
+                EcoLearn AI is a comprehensive sustainable learning platform that combines artificial intelligence with environmental education. Our mission is to empower individuals with the knowledge and tools they need to make environmentally conscious decisions and contribute to a sustainable future.
+            </p>
+            <p>
+                Through interactive features, gamification, and real-world applications, we make environmental learning accessible and engaging for everyone, regardless of their background or experience level.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Explore Our Features</h2>
+            <div class="feature-grid">
+                <a href="chat.html" class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">AI Chatbot</h3>
+                    <p class="feature-description">
+                        Get instant answers to your environmental questions with our intelligent AI assistant. Ask about climate change, renewable energy, conservation practices, and more.
+                    </p>
+                    <span class="feature-btn">Start Chatting</span>
+                </a>
+
+                <a href="carbon.html" class="feature-card">
+                    <span class="feature-icon">🌱</span>
+                    <h3 class="feature-title">Carbon Footprint Calculator</h3>
+                    <p class="feature-description">
+                        Calculate your personal carbon footprint and discover practical ways to reduce your environmental impact. Track your progress over time and set sustainability goals.
+                    </p>
+                    <span class="feature-btn">Calculate Now</span>
+                </a>
+
+                <a href="recycle.html" class="feature-card">
+                    <span class="feature-icon">♻️</span>
+                    <h3 class="feature-title">Smart Recycling Guide</h3>
+                    <p class="feature-description">
+                        Upload photos of items to get instant recycling guidance. Learn proper disposal methods, find recycling centers, and contribute to a circular economy.
+                    </p>
+                    <span class="feature-btn">Get Guide</span>
+                </a>
+
+                <a href="quiz.html" class="feature-card">
+                    <span class="feature-icon">❓</span>
+                    <h3 class="feature-title">Environmental Quiz</h3>
+                    <p class="feature-description">
+                        Test your environmental knowledge with interactive quizzes covering topics from climate science to sustainable living. Earn badges and compete with friends.
+                    </p>
+                    <span class="feature-btn">Take Quiz</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🌱 EcoLearn AI</h3>
+                <p>Empowering sustainable learning through artificial intelligence and environmental education.</p>
+                <p>Together, we can build a greener, more sustainable future for generations to come.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="chat.html">AI Environmental Chatbot</a></li>
+                    <li><a href="carbon.html">Carbon Footprint Calculator</a></li>
+                    <li><a href="recycle.html">Smart Recycling Guide</a></li>
+                    <li><a href="quiz.html">Environmental Quiz</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Learn More</h3>
+                <ul>
+                    <li><a href="share.html">Share Your Impact</a></li>
+                    <li><a href="#" onclick="ecolearnAI.showNotification('Visit our blog for latest updates!', 'info')">Sustainability Blog</a></li>
+                    <li><a href="#" onclick="ecolearnAI.showNotification('Join our community forum!', 'info')">Community Forum</a></li>
+                    <li><a href="#" onclick="ecolearnAI.showNotification('Check back for upcoming events!', 'info')">Events & Workshops</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <p>Join our mission to create a sustainable future through education and technology.</p>
+                <p>📧 Contact: ecolearn@sustainability.edu</p>
+                <p>🌍 Building a better tomorrow, one learner at a time</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 EcoLearn AI. Dedicated to environmental education and sustainable learning.</p>
+        </div>
+    </footer>
 
     <script>
         if ("serviceWorker" in navigator) {
